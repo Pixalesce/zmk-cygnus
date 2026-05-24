@@ -10,63 +10,246 @@
 #include <dt-bindings/zmk/pointing.h>
 
 / {
-        keymap {
-                compatible = "zmk,keymap";
-
-                default_layer {
-// -----------------------------------------------------------------------------------------
-// |  Q  |  W  |  E  |  R  |  T  |   |  Y  |  U   |  I  |  O  |  P  |
-// |  A  |  S  |  D  |  F  |  G  |   |  H  |  J   |  K  |  L  |  ;  |
-// |  Z  |  X  |  C  |  V  |  B  |   |  N  |  M   |  ,  |  .  |  /  |
-//             | GUI | LWR | SPC |   | ENT | RSE  | ALT |
-                        bindings = <
-   &kp Q &kp W &kp E &kp R &kp T   &kp Y &kp U  &kp I     &kp O   &kp P
-   &kp A &kp S &kp D &kp F &kp G   &kp H &kp J  &kp K     &kp L   &kp SEMI
-   &kp Z &kp X &kp C &kp V &kp B   &kp N &kp M  &kp COMMA &kp DOT &kp FSLH
-              &kp LGUI &mo 1 &kp SPACE   &kp RET &mo 2 &studio_unlock
-                        >;
-                };
-
-                lower_layer {
-// -----------------------------------------------------------------------------------------
-// |  1  |  2  |  3  |  4  |  5  |   |  6  |  7  |  8  |  9  |  0  |
-// | BTCLR| BT1 | BT2 | BT3 | BT4 |   | LFT | DWN |  UP | RGT | DEL |
-// | SHFT |     |     |     | BT5 |   |     |     |     |     | BSPC|
-//              | GUI |     | SPC |   | ENT |     | ALT |
-                        bindings = <
-   &kp N1       &kp N2       &kp N3       &kp N4       &kp N5           &kp N6   &kp N7   &kp N8 &kp N9    &kp N0
-   &bt BT_CLR   &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3     &kp LEFT &kp DOWN &kp UP &kp RIGHT &kp DEL
-   &kp LSHFT    &trans       &trans       &trans       &bt BT_SEL 4     &trans   &trans   &trans &trans    &kp BSPC
-                                      &kp LGUI     &trans       &kp SPACE        &kp RET  &mo 3  &kp RALT
-                        >;
-                };
-
-                raise_layer {
-// -----------------------------------------------------------------------------------------
-// |  !  |  @  |  #  |  $  |  %  |   |  ^  |  &  |  *  |  (  |  )  |
-// |     |     |     |     |     |   |  -  |  =  |  [  |  ]  |  \  |
-// |     |     |     |     |     |   |  _  |  +  |  {  |  }  | "|" |
-//             | GUI |     | SPC |   | ENT |     | ALT |
-                        bindings = <
-   &kp EXCL &kp AT &kp HASH &kp DLLR &kp PRCNT   &kp CARET &kp AMPS  &kp ASTRK &kp LPAR &kp RPAR
-   &trans   &trans &trans   &trans   &trans       &kp MINUS &kp EQUAL &kp LBKT  &kp RBKT &kp BSLH
-   &trans   &trans &trans   &trans   &trans       &kp UNDER &kp PLUS  &kp LBRC  &kp RBRC &kp PIPE
-                   &kp LGUI &trans   &kp SPACE    &kp RET   &trans    &kp RALT
-                        >;
-                };
-
-                mouse_layer {
-// -----------------------------------------------------------------------------------------
-// | LCLK| RCLK| MCLK|     |     |   |     |     |     |     |     |
-// |     | M_UP|     |     |     |   |     | S_UP|     |     |     |
-// | M_LT| M_DN| M_RT|     |     |   | S_LT| S_DN| S_RT|     |     |
-//             |     |     |     |   |     |     |     |
-                        bindings = <
-   &mkp LCLK      &mkp RCLK      &mkp MCLK       &trans &trans   &trans         &trans         &trans          &trans &trans
-   &trans         &mmv MOVE_UP   &trans          &trans &trans   &trans         &msc SCRL_UP   &trans          &trans &trans
-   &mmv MOVE_LEFT &mmv MOVE_DOWN &mmv MOVE_RIGHT &trans &trans   &msc SCRL_LEFT &msc SCRL_DOWN &msc SCRL_RIGHT &trans &trans
-                                 &trans          &trans &trans   &trans         &trans         &trans
-                        >;
-                };
+    behaviors {
+        /*
+         * Home row mods (AGC order, left: S=Alt D=GUI F=Ctrl, right: M=Ctrl ,=GUI .=Alt)
+         * Tap = letter, Hold = modifier
+         */
+        hm: homerow_mods {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            tapping-term-ms = <280>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <150>;
+            flavor = "balanced";
+            bindings = <&kp>, <&kp>;
         };
+
+        /*
+         * TD(31): tap = Tab, double-tap = switch to layer 1
+         */
+        td31: tap_dance_31 {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&kp TAB>, <&to 1>;
+        };
+    };
+
+    keymap {
+        compatible = "zmk,keymap";
+
+        /* ─────────────────────────────────────────────────────────────────
+         * Layer 0: Default QWERTY + Home Row Mods
+         * ─────────────────────────────────────────────────────────────────
+         * ┌─────┬──────┬──────┬──────┬─────┐   ┌─────┬──────┬──────┬──────┬─────┐
+         * │  Q  │  W   │  E   │  R   │  T  │   │  Y  │  U   │  I   │  O   │  P  │
+         * ├─────┼──────┼──────┼──────┼─────┤   ├─────┼──────┼──────┼──────┼─────┤
+         * │  A  │S/ALT │D/GUI │F/CTL │  G  │   │  H  │  J   │  K   │  L   │  '  │
+         * ├─────┼──────┼──────┼──────┼─────┤   ├─────┼──────┼──────┼──────┼─────┤
+         * │  Z  │  X   │  C   │  V   │  B  │   │  N  │M/CTL │,/GUI │./ALT │  /  │
+         * └─────┴──────┴─┬────┴─┬────┴─┬───┘   └─┬───┴─┬────┴─┬────┴──────┴─────┘
+         *               │ ESC  │TD(31)│RCTL│   │BSPC │ SPC  │MO(1) │
+         *               └──────┴──────┴────┘   └─────┴──────┴──────┘
+         */
+        default_layer {
+            bindings = <
+   &kp Q  &kp W       &kp E       &kp R        &kp T      &kp Y    &kp U          &kp I           &kp O        &kp P
+   &kp A  &hm LALT S  &hm LGUI D  &hm LCTRL F  &kp G      &kp H    &kp J          &kp K           &kp L        &kp SQT
+   &kp Z  &kp X       &kp C       &kp V        &kp B      &kp N    &hm RCTRL M    &hm RGUI COMMA  &hm RALT DOT &kp FSLH
+                       &kp ESC    &td31        &kp RCTRL  &kp BSPC &kp SPACE      &mo 1
+            >;
+        };
+
+        /* ─────────────────────────────────────────────────────────────────
+         * Layer 1: Symbols & Numbers
+         * ─────────────────────────────────────────────────────────────────
+         * ┌─────┬─────┬─────┬─────┬─────┐   ┌─────┬─────┬─────┬─────┬─────┐
+         * │ ESC │  2  │  3  │  4  │  5  │   │  \  │  6  │  7  │  8  │TO(0)│
+         * ├─────┼─────┼─────┼─────┼─────┤   ├─────┼─────┼─────┼─────┼─────┤
+         * │ TAB │  -  │  '  │  ;  │  1  │   │  .  │  9  │  0  │  ,  │ ENT │
+         * ├─────┼─────┼─────┼─────┼─────┤   ├─────┼─────┼─────┼─────┼─────┤
+         * │LCTL │LALT │  =  │  `  │  /  │   │LCTL │  [  │  ]  │LALT │TO(3)│
+         * └─────┴─────┴──┬──┴──┬──┴──┬──┘   └──┬──┴──┬──┴──┬──┴─────┴─────┘
+         *               │TO(2)│LSFT │LGUI│   │     │LGUI │STUD │
+         */
+        layer_1 {
+            bindings = <
+   &kp ESC   &kp N2     &kp N3    &kp N4     &kp N5     &kp BSLH  &kp N6   &kp N7   &kp N8    &to 0
+   &kp TAB   &kp MINUS  &kp SQT   &kp SEMI   &kp N1     &kp DOT   &kp N9   &kp N0   &kp COMMA &kp ENTER
+   &kp LCTRL &kp LALT   &kp EQUAL &kp GRAVE  &kp FSLH   &kp LCTRL &kp LBKT &kp RBKT &kp LALT  &to 3
+                         &to 2    &kp LSHFT  &kp LGUI   &trans    &kp LGUI &studio_unlock
+            >;
+        };
+
+        /* ─────────────────────────────────────────────────────────────────
+         * Layer 2: Numpad + Media Controls
+         * ─────────────────────────────────────────────────────────────────
+         * ┌─────┬──────┬──────┬──────┬─────┐   ┌─────┬─────┬─────┬─────┬─────┐
+         * │ ESC │ PREV │PLAY │ NEXT │  _  │   │  -  │  7  │  8  │  9  │TO(0)│
+         * ├─────┼──────┼──────┼──────┼─────┤   ├─────┼─────┼─────┼─────┼─────┤
+         * │ TAB │ LALT │     │MUTE │  +  │   │  =  │  4  │  5  │  6  │ ENT │
+         * ├─────┼──────┼──────┼──────┼─────┤   ├─────┼─────┼─────┼─────┼─────┤
+         * │LCTL │  *   │BRI↓ │BRI↑ │  .  │   │  0  │  1  │  2  │  3  │TO(3)│
+         * └─────┴──────┴──┬───┴──┬───┴──┬──┘   └──┬──┴──┬──┴──┬──┴─────┴─────┘
+         *                │TO(0)│LSFT │LGUI│   │     │LGUI │     │
+         */
+        layer_2 {
+            bindings = <
+   &kp ESC   &kp C_VOL_DN  &kp C_PP     &kp C_VOL_UP   &kp UNDER  &kp MINUS &kp N7  &kp N8  &kp N9  &to 0
+   &kp TAB   &kp LALT    &trans       &kp C_MUTE   &kp PLUS   &kp EQUAL &kp N4  &kp N5  &kp N6  &kp ENTER
+   &kp LCTRL &kp STAR    &kp C_BRI_DN &kp C_BRI_UP &kp DOT    &kp N0    &kp N1  &kp N2  &kp N3  &to 3
+                          &to 0       &kp LSHFT    &kp LGUI   &trans    &kp LGUI &trans
+            >;
+        };
+
+        /* ─────────────────────────────────────────────────────────────────
+         * Layer 3: Navigation + Mouse Scroll
+         * ─────────────────────────────────────────────────────────────────
+         * ┌─────┬──────┬──────┬──────┬─────┐   ┌──────┬──────┬──────┬──────┬─────┐
+         * │ ESC │ PREV │PLAY │ NEXT │ F6  │   │SCL←  │SCL↑  │SCL↓  │SCL→  │TO(0)│
+         * ├─────┼──────┼──────┼──────┼─────┤   ├──────┼──────┼──────┼──────┼─────┤
+         * │ TAB │ LALT │LGUI │MUTE │ F5  │   │ ←    │ ↓    │ ↑    │ →    │ ENT │
+         * ├─────┼──────┼──────┼──────┼─────┤   ├──────┼──────┼──────┼──────┼─────┤
+         * │LCTL │TO(6) │TO(5) │     │ F1  │   │TO(13)│      │      │      │LGUI │
+         * └─────┴──────┴──┬───┴──┬───┴──┬──┘   └──┬───┴──┬───┴──┬───┴──────┴─────┘
+         *                │TO(0)│     │     │   │      │ SPC  │MO(4) │
+         */
+        layer_3 {
+            bindings = <
+   &kp ESC   &kp C_PREV &kp C_PP  &kp C_NEXT &kp F6     &msc SCRL_LEFT &msc SCRL_UP  &msc SCRL_DOWN  &msc SCRL_RIGHT &to 0
+   &kp TAB   &kp LALT   &kp LGUI  &kp C_MUTE &kp F5     &kp LEFT       &kp DOWN      &kp UP          &kp RIGHT       &kp ENTER
+   &kp LCTRL &to 6      &to 5     &trans     &kp F1     &to 13         &trans        &trans          &trans          &kp LGUI
+                          &to 0   &trans     &trans      &trans         &kp SPACE     &mo 4
+            >;
+        };
+
+        /* ─────────────────────────────────────────────────────────────────
+         * Layer 4: Mouse Movement + Clicks
+         * ─────────────────────────────────────────────────────────────────
+         * ┌─────┬─────┬──────┬──────┬─────┐   ┌─────┬──────┬──────┬──────┬──────┐
+         * │     │     │      │      │     │   │     │      │      │      │      │
+         * ├─────┼─────┼──────┼──────┼─────┤   ├─────┼──────┼──────┼──────┼──────┤
+         * │     │     │ MB2  │ MB1  │CUT  │   │     │ M←   │ M↓   │ M↑   │ M→   │
+         * ├─────┼─────┼──────┼──────┼─────┤   ├─────┼──────┼──────┼──────┼──────┤
+         * │     │     │PASTE │COPY  │     │   │     │      │      │      │      │
+         * └─────┴─────┴──┬───┴──┬───┴──┬──┘   └──┬──┴──┬───┴──┬───┴──────┴──────┘
+         *               │     │      │     │   │     │      │      │
+         * Cut/Copy/Paste use Ctrl+X/C/V — adjust to LG() if on macOS without remap
+         */
+        layer_4 {
+            bindings = <
+   &trans &trans  &trans    &trans    &trans     &trans &trans         &trans         &trans        &trans
+   &trans &trans  &mkp MB2  &mkp MB1  &kp LC(X)  &trans &mmv MOVE_LEFT &mmv MOVE_DOWN &mmv MOVE_UP  &mmv MOVE_RIGHT
+   &trans &trans  &kp LC(V) &kp LC(C) &trans     &trans &trans         &trans         &trans        &trans
+                  &trans    &trans    &trans      &trans &trans         &trans
+            >;
+        };
+
+        /* ─────────────────────────────────────────────────────────────────
+         * Layer 5: Gaming (RCTRL/W/E/F both rows, number row right)
+         * ─────────────────────────────────────────────────────────────────
+         */
+        layer_5 {
+            bindings = <
+   &kp RCTRL &kp W  &kp E  &kp F  &trans   &trans &kp N1    &kp N2 &kp N3 &kp N4
+   &kp RCTRL &kp W  &kp E  &kp F  &trans   &trans &kp H     &kp J  &kp K  &kp L
+   &trans    &trans &trans &trans &trans   &trans &trans    &trans &trans &trans
+                    &to 0  &kp RCTRL &trans &trans &kp SPACE &trans
+            >;
+        };
+
+        /* ─────────────────────────────────────────────────────────────────
+         * Layer 6: Placeholder
+         * ─────────────────────────────────────────────────────────────────
+         */
+        layer_6 {
+            bindings = <
+   &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans
+   &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans
+   &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans
+                 &trans &trans &trans   &trans &trans &trans
+            >;
+        };
+
+        /* ─────────────────────────────────────────────────────────────────
+         * Layer 7: WASD Gaming
+         * ─────────────────────────────────────────────────────────────────
+         * ┌──────┬─────┬─────┬─────┬─────┐   ┌─────┬─────┬─────┬─────┬─────┐
+         * │ LALT │  2  │  3  │  4  │  Q  │   │     │     │     │     │TO(0)│
+         * ├──────┼─────┼─────┼─────┼─────┤   ├─────┼─────┼─────┼─────┼─────┤
+         * │  A   │  S  │  W  │  D  │  1  │   │     │     │     │     │     │
+         * ├──────┼─────┼─────┼─────┼─────┤   ├─────┼─────┼─────┼─────┼─────┤
+         * │  `   │  V  │  F  │  C  │  R  │   │     │     │     │     │     │
+         * └──────┴─────┴──┬──┴──┬──┴──┬──┘   └──┬──┴──┬──┴──┬──┴─────┴─────┘
+         *                │LSFT │ SPC │     │   │RCTL │  J  │     │
+         */
+        layer_7 {
+            bindings = <
+   &kp LALT  &kp N2 &kp N3 &kp N4 &kp Q    &trans    &trans &trans &trans &to 0
+   &kp A     &kp S  &kp W  &kp D  &kp N1   &trans    &trans &trans &trans &trans
+   &kp GRAVE &kp V  &kp F  &kp C  &kp R    &trans    &trans &trans &trans &trans
+                    &kp LSHFT &kp SPACE &trans  &kp RCTRL &kp J &trans
+            >;
+        };
+
+        /* ─────────────────────────────────────────────────────────────────
+         * Layer 8: Special Input
+         * ─────────────────────────────────────────────────────────────────
+         */
+        layer_8 {
+            bindings = <
+   &kp N8  &kp N9 &kp N5   &kp N6    &kp N7    &trans &trans &trans &trans &trans
+   &kp TAB &kp P  &kp L    &kp ESC   &kp M     &trans &trans &trans &trans &trans
+   &kp ESC &kp F2 &kp RBKT &kp RCTRL &kp F1    &trans &trans &trans &trans &trans
+                   &trans  &trans    &trans     &trans &trans &trans
+            >;
+        };
+
+        /* Layers 9–13: Placeholders */
+        layer_9 {
+            bindings = <
+   &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans
+   &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans
+   &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans
+                 &trans &trans &trans   &trans &trans &trans
+            >;
+        };
+
+        layer_10 {
+            bindings = <
+   &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans
+   &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans
+   &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans
+                 &trans &trans &trans   &trans &trans &trans
+            >;
+        };
+
+        layer_11 {
+            bindings = <
+   &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans
+   &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans
+   &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans
+                 &trans &trans &trans   &trans &trans &trans
+            >;
+        };
+
+        layer_12 {
+            bindings = <
+   &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans
+   &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans
+   &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans
+                 &trans &trans &trans   &trans &trans &trans
+            >;
+        };
+
+        layer_13 {
+            bindings = <
+   &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans
+   &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans
+   &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans
+                 &trans &trans &trans   &trans &trans &trans
+            >;
+        };
+    };
 };
