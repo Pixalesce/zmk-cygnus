@@ -1,6 +1,6 @@
 layout: {zmk_keyboard: corne}
 layers:
-  default:
+  Base:
   - Q
   - W
   - E
@@ -36,8 +36,8 @@ layers:
   - RCTRL
   - BSPC
   - SPACE
-  - '1'
-  '1':
+  - Symbols
+  Symbols:
   - ESC
   - '2'
   - '3'
@@ -47,7 +47,7 @@ layers:
   - '6'
   - '7'
   - '8'
-  - {t: default, h: toggle}
+  - {t: Base, h: toggle}
   - TAB
   - '-'
   - ''''
@@ -67,14 +67,14 @@ layers:
   - '['
   - ']'
   - LALT
-  - {t: '3', h: toggle}
-  - {t: '2', h: toggle}
+  - {t: Navigation, h: toggle}
+  - {t: Numpad, h: toggle}
   - LSHFT
   - LGUI
   - {t: ▽, type: trans}
   - LGUI
   - {type: held}
-  '2':
+  Numpad:
   - ESC
   - VOL DN
   - PP
@@ -84,7 +84,7 @@ layers:
   - '7'
   - '8'
   - '9'
-  - {t: default, h: toggle}
+  - {t: Base, h: toggle}
   - TAB
   - LALT
   - {t: ▽, type: trans}
@@ -104,14 +104,14 @@ layers:
   - '1'
   - '2'
   - '3'
-  - {t: '3', h: toggle}
-  - {t: default, h: toggle}
+  - {t: Navigation, h: toggle}
+  - {t: Base, h: toggle}
   - LSHFT
   - LGUI
   - {t: ▽, type: trans}
   - LGUI
   - {t: ▽, type: trans}
-  '3':
+  Navigation:
   - ESC
   - PREV
   - PP
@@ -121,7 +121,7 @@ layers:
   - '&msc SCRL_UP'
   - '&msc SCRL_DOWN'
   - '&msc SCRL_RIGHT'
-  - {t: default, h: toggle}
+  - {t: Base, h: toggle}
   - TAB
   - LALT
   - LGUI
@@ -134,7 +134,7 @@ layers:
   - ENTER
   - LCTRL
   - {t: '6', h: toggle}
-  - {t: '5', h: toggle}
+  - {t: Tetris, h: toggle}
   - {t: ▽, type: trans}
   - F1
   - {t: '13', h: toggle}
@@ -142,13 +142,13 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - LGUI
-  - {t: default, h: toggle}
+  - {t: Base, h: toggle}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - SPACE
-  - '4'
-  '4':
+  - Moüse
+  Moüse:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -185,7 +185,7 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {type: held}
-  '5':
+  Tetris:
   - RCTRL
   - W
   - E
@@ -216,7 +216,7 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {t: default, h: toggle}
+  - {t: Base, h: toggle}
   - RCTRL
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -259,7 +259,7 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  '7':
+  WASD:
   - LALT
   - '2'
   - '3'
@@ -269,7 +269,7 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {t: default, h: toggle}
+  - {t: Base, h: toggle}
   - A
   - S
   - W
@@ -296,7 +296,7 @@ layers:
   - RCTRL
   - J
   - {t: ▽, type: trans}
-  '8':
+  Game Extended:
   - '8'
   - '9'
   - '5'
