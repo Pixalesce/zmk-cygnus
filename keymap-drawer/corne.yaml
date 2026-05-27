@@ -73,7 +73,7 @@ layers:
   - LGUI
   - {t: ▽, type: trans}
   - LGUI
-  - {t: '&studio_unlock', type: held}
+  - {type: held}
   '2':
   - ESC
   - VOL DN
