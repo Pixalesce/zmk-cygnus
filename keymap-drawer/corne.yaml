@@ -35,7 +35,7 @@ layers:
   - '&td31'
   - RCTRL
   - BSPC
-  - {t: LSHIFT, h: SPACE}
+  - {t: SPACE, h: LSHIFT}
   - SYMB
   SYMB:
   - ESC
