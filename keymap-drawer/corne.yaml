@@ -1,6 +1,6 @@
 layout: {zmk_keyboard: corne}
 layers:
-  Base:
+  BASE:
   - Q
   - W
   - E
@@ -36,8 +36,8 @@ layers:
   - RCTRL
   - BSPC
   - SPACE
-  - Symbols
-  Symbols:
+  - SYMB
+  SYMB:
   - ESC
   - '2'
   - '3'
@@ -47,7 +47,7 @@ layers:
   - '6'
   - '7'
   - '8'
-  - {t: Base, h: toggle}
+  - {t: BASE, h: toggle}
   - TAB
   - '-'
   - ''''
@@ -67,14 +67,14 @@ layers:
   - '['
   - ']'
   - LALT
-  - {t: Navigation, h: toggle}
-  - {t: Numpad, h: toggle}
+  - {t: NVGN, h: toggle}
+  - {t: NUMP, h: toggle}
   - LSHFT
   - LGUI
   - {t: ▽, type: trans}
   - LGUI
   - {type: held}
-  Numpad:
+  NUMP:
   - ESC
   - VOL DN
   - PP
@@ -84,7 +84,7 @@ layers:
   - '7'
   - '8'
   - '9'
-  - {t: Base, h: toggle}
+  - {t: BASE, h: toggle}
   - TAB
   - LALT
   - {t: ▽, type: trans}
@@ -104,14 +104,14 @@ layers:
   - '1'
   - '2'
   - '3'
-  - {t: Navigation, h: toggle}
-  - {t: Base, h: toggle}
+  - {t: NVGN, h: toggle}
+  - {t: BASE, h: toggle}
   - LSHFT
   - LGUI
   - {t: ▽, type: trans}
   - LGUI
   - {t: ▽, type: trans}
-  Navigation:
+  NVGN:
   - ESC
   - PREV
   - PP
@@ -121,7 +121,7 @@ layers:
   - '&msc SCRL_UP'
   - '&msc SCRL_DOWN'
   - '&msc SCRL_RIGHT'
-  - {t: Base, h: toggle}
+  - {t: BASE, h: toggle}
   - TAB
   - LALT
   - LGUI
@@ -134,7 +134,7 @@ layers:
   - ENTER
   - LCTRL
   - {t: '6', h: toggle}
-  - {t: Tetris, h: toggle}
+  - {t: TETR, h: toggle}
   - {t: ▽, type: trans}
   - F1
   - {t: '13', h: toggle}
@@ -142,18 +142,18 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - LGUI
-  - {t: Base, h: toggle}
+  - {t: BASE, h: toggle}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - SPACE
-  - Moüse
-  Moüse:
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
+  - MOÜS
+  MOÜS:
+  - OUT USB
+  - {t: BT, h: '0'}
+  - {t: BT, h: '1'}
+  - {t: BT, h: '2'}
+  - BT CLR
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -164,11 +164,11 @@ layers:
   - '&mkp MB2'
   - '&mkp MB1'
   - Ctl+X
-  - {t: ▽, type: trans}
   - '&mmv MOVE_LEFT'
   - '&mmv MOVE_DOWN'
   - '&mmv MOVE_UP'
   - '&mmv MOVE_RIGHT'
+  - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - Ctl+V
@@ -185,7 +185,7 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {type: held}
-  Tetris:
+  TETR:
   - RCTRL
   - W
   - E
@@ -216,7 +216,7 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {t: Base, h: toggle}
+  - {t: BASE, h: toggle}
   - RCTRL
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -269,7 +269,7 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {t: Base, h: toggle}
+  - {t: BASE, h: toggle}
   - A
   - S
   - W
@@ -296,7 +296,7 @@ layers:
   - RCTRL
   - J
   - {t: ▽, type: trans}
-  Game Extended:
+  GME+:
   - '8'
   - '9'
   - '5'
